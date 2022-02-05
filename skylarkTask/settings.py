@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
 
-    
+
     'cloudinary_storage',
     'django.contrib.staticfiles',
     'cloudinary',
@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'django_celery_beat',
-    
+
 
     # custom
     'cameraAPI',
@@ -168,13 +168,14 @@ REST_FRAMEWORK = {
     ],
 }
 
+CLOUDINARY_SECRET = 'VOBykdG82qjUVNMgelDBkry4bcM'
+CLOUDINARY_KEY = "938331574129682"
+CLOUDINARY_CLOUD = 'dpzcldoy7'
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'dpzcldoy7',
-    'API_KEY': '938331574129682',
-    'API_SECRET': 'VOBykdG82qjUVNMgelDBkry4bcM'
+    'CLOUD_NAME': CLOUDINARY_CLOUD,
+    'API_KEY': CLOUDINARY_KEY,
+    'API_SECRET': CLOUDINARY_SECRET
 }
-
-
 
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.RawMediaCloudinaryStorage'

@@ -6,10 +6,13 @@ from cameraAPI.tasks import *
 from cameraAPI.models import Camera
 from celery.schedules import crontab
 from skylarkTask.celery import app
+from django.conf import settings
 import cloudinary as cld
 cld.config()
 
 # @shared_task
+
+
 @app.task
 def change_image_per_5_minutes(camera_id):
 
@@ -33,8 +36,8 @@ def change_image_per_5_minutes(camera_id):
 
 
 def upload_to_cld(path):
-    res = cld.uploader.upload(path, folder='media/thumbnails/', api_key='938331574129682',
-                        api_secret="VOBykdG82qjUVNMgelDBkry4bcM", cloud_name="dpzcldoy7")
+    res = cld.uploader.upload(path, folder='media/thumbnails/', api_key=settings.CLOUDINARY_KEY,
+                              api_secret=settings.CLOUDINARY_SECRET, cloud_name=settings.CLOUDINARY_CLOUD)
     # print(res)
     return res['secure_url']
 
@@ -42,9 +45,9 @@ def upload_to_cld(path):
 dic = {}
 for item in Camera.objects.all():
     dic['task'+str(item.id)] = {
-       'task': 'cameraAPI.tasks.change_image_per_5_minutes',
-       'schedule': crontab(minute='*/5'),
-       'args':(item.id, )
-   }
+        'task': 'cameraAPI.tasks.change_image_per_5_minutes',
+        'schedule': crontab(minute='*/5'),
+        'args': (item.id, )
+    }
 
 app.conf.beat_schedule = dic
