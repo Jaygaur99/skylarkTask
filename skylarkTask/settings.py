@@ -102,7 +102,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'skylarkdb',
         'USER': 'root',
-        'PASSWORD': 'Bhavesh@8817',
+        'PASSWORD': 'root@mysql',
         'HOST': 'localhost',
         'PORT': '3306',
     }
@@ -168,9 +168,9 @@ REST_FRAMEWORK = {
     ],
 }
 
-CLOUDINARY_SECRET = 'VOBykdG82qjUVNMgelDBkry4bcM'
-CLOUDINARY_KEY = "938331574129682"
-CLOUDINARY_CLOUD = 'dpzcldoy7'
+CLOUDINARY_SECRET = ''
+CLOUDINARY_KEY = ''
+CLOUDINARY_CLOUD = ''
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': CLOUDINARY_CLOUD,
     'API_KEY': CLOUDINARY_KEY,
