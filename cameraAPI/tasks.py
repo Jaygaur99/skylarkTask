@@ -11,12 +11,11 @@ cld.config()
 
 # @shared_task
 @app.task
-def change_image_per_5_minutes(camera_obj):
-    # RTSP_URL = 'rtsp://10.5.36.206:5554/playlist.m3u'
-    # print(camera_obj.id)
-    print("HUI")
+def change_image_per_5_minutes(camera_id):
+
+    camera_obj = Camera.objects.get(id=int(camera_id))
     RTSP_URL = camera_obj.stream_url
-    print(RTSP_URL)
+    # print(RTSP_URL)
     cap = cv2.VideoCapture(RTSP_URL)
     ret, frame = cap.read()
     if cap.isOpened():
@@ -25,23 +24,27 @@ def change_image_per_5_minutes(camera_obj):
         if _ and frame is not None:
             path = f'thumbnails/{camera_obj.owner.username}.jpg'
             cv2.imwrite('media/' + path, frame)
+            # print("DONE WITH CV2")
             img_url = upload_to_cld('media/' + path)
             camera_obj.update_thumbnail(img_url)
             # delete cv2 temp image
             os.remove('media/' + path)
+            # print("DONE")
 
 
 def upload_to_cld(path):
     res = cld.uploader.upload(path, folder='media/thumbnails/', api_key='938331574129682',
                         api_secret="VOBykdG82qjUVNMgelDBkry4bcM", cloud_name="dpzcldoy7")
+    # print(res)
     return res['secure_url']
-# def configure_periodic_tasks():
-#     dic = {}
-#     for obj in Camera.objects.all():
-#         dic['change_image_per_5_minutes' + str(obj.id)] = {
-#             'task': 'cameraAPI.tasks.change_image_per_5_minutes',
-#             'schedule': 10, # crontab(minute=5),
-#             'args': (obj,)
-#         }
-#     print(dic)
-#     app.conf.beat_schedule = dic
+
+
+dic = {}
+for item in Camera.objects.all():
+    dic['task'+str(item.id)] = {
+       'task': 'cameraAPI.tasks.change_image_per_5_minutes',
+       'schedule': crontab(minute='*/5'),
+       'args':(item.id, )
+   }
+
+app.conf.beat_schedule = dic
