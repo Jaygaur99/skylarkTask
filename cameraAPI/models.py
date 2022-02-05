@@ -1,3 +1,4 @@
+from this import d
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
@@ -16,6 +17,11 @@ class Camera(models.Model):
     @property
     def get_location(self):
         return self.location.label
+
+    def update_thumbnail(self, path):
+        self.thumbnail = path
+        # print(self.thumbnail)
+        self.save()
 
     def __str__(self):
         return self.get_location + ' - ' + self.label
