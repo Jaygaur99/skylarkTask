@@ -13,6 +13,11 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import pymysql
 import os
+import cloudinary_storage
+
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,12 +43,17 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+
+    
+    'cloudinary_storage',
     'django.contrib.staticfiles',
+    'cloudinary',
 
     # Dependencies
     'rest_framework',
     'rest_framework.authtoken',
     'django_celery_beat',
+    
 
     # custom
     'cameraAPI',
@@ -157,3 +167,14 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',  # <-- And here
     ],
 }
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dpzcldoy7',
+    'API_KEY': '938331574129682',
+    'API_SECRET': 'VOBykdG82qjUVNMgelDBkry4bcM'
+}
+
+
+
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.RawMediaCloudinaryStorage'

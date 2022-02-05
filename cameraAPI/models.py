@@ -11,7 +11,7 @@ class Camera(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     label = models.CharField(max_length=100)
     description = models.TextField(blank=True)
-    thumbnail = models.ImageField(upload_to='thumbnails', blank=True)
+    thumbnail = models.URLField(blank=True)
     stream_url = models.CharField(max_length=512)
     
     @property
@@ -20,7 +20,6 @@ class Camera(models.Model):
 
     def update_thumbnail(self, path):
         self.thumbnail = path
-        # print(self.thumbnail)
         self.save()
 
     def __str__(self):
